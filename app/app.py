@@ -4,6 +4,7 @@ Módulo principal de la aplicación web Flask para la calculadora.
 
 from flask import Flask, render_template, request
 from .calculadora import sumar, restar, multiplicar, dividir
+import os
 
 app = Flask(__name__)
 
@@ -38,7 +39,12 @@ def index():
 
     return render_template("index.html", resultado=resultado)
 
+@app.route("/health")
+def health():
+    return "OK", 200
+
 
 if __name__ == "__main__":  # pragma: no cover
     # Quitar debug=True en producción
     app.run(debug=True, port=5000, host="0.0.0.0")
+    app.secret_key = os.environ.get("FLASK_SECRET_KEY", "dev-only-insecure-key")
